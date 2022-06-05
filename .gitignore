@@ -6,3 +6,5 @@ tmp/
 .terraform.*
 iac/.terraform/
 out/
+terraform.tfstate.*
+terraform.tfstate

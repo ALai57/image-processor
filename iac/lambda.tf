@@ -34,7 +34,7 @@ resource "aws_iam_role" "lambda_iam" {
 EOF
 }
 
-resource "aws_iam_role_policy" "s3_access" {
+resource "aws_iam_role_policy" "lambda_policy" {
   name = "s3_access_for_image_processor"
   role = aws_iam_role.lambda_iam.id
 
@@ -44,7 +44,10 @@ resource "aws_iam_role_policy" "s3_access" {
   "Statement": [
     {
       "Action": [
-        "s3:*"
+        "s3:*",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
       ],
       "Effect": "Allow",
       "Resource": "*"
