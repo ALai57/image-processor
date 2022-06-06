@@ -44,7 +44,7 @@ def thumbnail_name(key):
     return new_key.replace(QUEUE_FOLDER, NEW_FOLDER)
 
 def archive_name(key):
-    return new_key.replace(QUEUE_FOLDER, ARCHIVE_FOLDER)
+    return key.replace(QUEUE_FOLDER, ARCHIVE_FOLDER)
 
 #############################
 # Main
