@@ -10,4 +10,22 @@ https://github.com/awsdocs/aws-lambda-developer-guide/blob/main/doc_source/pytho
 
 TODO:
 
-Apply TF and check if Lambda FN works
+Lambda actually processes image - and tests for it
+
+### Local development
+
+``` sh
+source env/bin/activate
+
+```
+
+``` sh
+# Install Boto3, but don't add to src directory because
+# AWS already includes it
+pip install boto3
+
+# Install requirements into src directory because we need to 
+# manually add them and package them together
+pip install --target src/deps -r requirements.txt
+```
+
