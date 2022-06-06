@@ -65,6 +65,7 @@ resource "aws_lambda_function" "image_processor" {
   handler          = "image-processor.main"
   runtime          = "python3.8"
   source_code_hash  = data.archive_file.lambda.output_base64sha256
+  timeout          = 30
 }
 
 # Adding S3 bucket as trigger to my lambda and giving the permissions
