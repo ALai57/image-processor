@@ -15,6 +15,8 @@ logger.setLevel(logging.INFO)
 
 s3 = boto3.client('s3')
 MAX_SIZE = (500,500)
+QUEUE_FOLDER = 'queued'
+NEW_FOLDER = 'processed'
 
 #############################
 # Helpers
@@ -35,6 +37,11 @@ def pillow_to_bytes(pillow_img):
     in_mem_file.seek(0)
     return in_mem_file
 
+def thumbnail_name(key):
+    fname, ext = file_parts(key)
+    new_key    = fname + '-500.' + ext
+    return new_key.replace(QUEUE_FOLDER, NEW_FOLDER)
+
 #############################
 # Main
 #############################
@@ -51,11 +58,10 @@ def main(event, context):
         img.thumbnail(MAX_SIZE)
 
         # Persist file to S3
-        fname, ext = file_parts(key)
-        new_key    = fname + '500.' + ext
-        logger.info(f"Uploading to s3://{bucket}/{new_key}")
-        ##s3.upload_fileobj(pillow_to_bytes(img), bucket, new_key)
-        logger.info(f"Successful upload to s3://{bucket}/{new_key}")
+        thumbnail_key = thumbnail_name(key)
+        logger.info(f"Uploading to s3://{bucket}/{thumbnail_key}")
+        s3.upload_fileobj(pillow_to_bytes(img), bucket, thumbnail_key)
+        logger.info(f"Successful upload to s3://{bucket}/{thumbnail_key}")
 
         return response['ContentType']
     except Exception as e:
