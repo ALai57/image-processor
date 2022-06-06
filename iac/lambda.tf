@@ -9,8 +9,8 @@ data "aws_s3_bucket" "andrewslai_wedding" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = "../src/image-processor.py"
-  output_path = "../out/image-processor.py.zip"
+  source_dir  = "../src"
+  output_path = "../out/image-processor.zip"
 }
 
 # Automatic processing when a new photo is uploaded.
@@ -64,6 +64,7 @@ resource "aws_lambda_function" "image_processor" {
   role             = aws_iam_role.lambda_iam.arn
   handler          = "image-processor.main"
   runtime          = "python3.8"
+  source_code_hash  = data.archive_file.lambda.output_base64sha256
 }
 
 # Adding S3 bucket as trigger to my lambda and giving the permissions
