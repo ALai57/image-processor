@@ -51,7 +51,7 @@ def main(event, context):
         img.thumbnail(MAX_SIZE)
 
         # Persist file to S3
-        fname, ext = file_parts(f)
+        fname, ext = file_parts(key)
         new_key    = fname + '500.' + ext
         logger.info(f"Uploading to s3://{bucket}/{new_key}")
         s3.upload_fileobj(pillow_to_bytes(img), bucket, new_key)
