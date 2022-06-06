@@ -64,11 +64,11 @@ def main(event, context):
         raise e
 
 
-# x = s3.get_object(Bucket='andrewslai-wedding', Key='queued/clojure-logo.jpg')
+# test_img = s3.get_object(Bucket='andrewslai-wedding', Key='queued/clojure-logo.jpg')['Body']
 
-# >>> x['Body']
+# >>> test_img
 # botocore.response.StreamingBody object at 0x7f4ca56112b0
 
-# print('x')
-# y = Image.open(x['Body'])
-# y.thumbnail(MAX_SIZE)
+# test_thumb = Image.open(test_img)
+# test_thumb.thumbnail(MAX_SIZE)
+# test_thumb.save('/home/andrew/dev/image-processor/clojure-logo.thumb.jpg')
