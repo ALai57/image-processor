@@ -8,3 +8,5 @@ iac/.terraform/
 out/
 terraform.tfstate.*
 terraform.tfstate
+src/deps
+env/
