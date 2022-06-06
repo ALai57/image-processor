@@ -14,9 +14,10 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 s3 = boto3.client('s3')
-MAX_SIZE = (500,500)
-QUEUE_FOLDER = 'queued'
-NEW_FOLDER = 'processed'
+MAX_SIZE       = (500,500)
+QUEUE_FOLDER   = 'queued'
+NEW_FOLDER     = 'processed'
+ARCHIVE_FOLDER = 'archive'
 
 #############################
 # Helpers
@@ -42,6 +43,9 @@ def thumbnail_name(key):
     new_key    = fname + '-500.' + ext
     return new_key.replace(QUEUE_FOLDER, NEW_FOLDER)
 
+def archive_name(key):
+    return new_key.replace(QUEUE_FOLDER, ARCHIVE_FOLDER)
+
 #############################
 # Main
 #############################
@@ -62,6 +66,15 @@ def main(event, context):
         logger.info(f"Uploading to s3://{bucket}/{thumbnail_key}")
         s3.upload_fileobj(pillow_to_bytes(img), bucket, thumbnail_key)
         logger.info(f"Successful upload to s3://{bucket}/{thumbnail_key}")
+
+        # Move file to "archive"
+        src_file    = f'/{bucket}/{key}'
+        archive_key = archive_name(key)
+        logger.info(f"Archiving s3://{bucket}/{key} to s3://{bucket}/{archive_key}")
+        s3.copy_object(Bucket=bucket, CopySource=src_file, Key=archive_key)
+        logger.info(f"Successfully Created Archive File s3://{bucket}/{archive_key}")
+        s3.delete_object(Bucket=bucket, Key=key)
+        logger.info(f"Successfully Deleted Original s3://{bucket}/{key}")
 
         return response['ContentType']
     except Exception as e:
