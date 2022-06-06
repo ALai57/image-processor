@@ -29,7 +29,7 @@ def get_key(event):
 def file_parts(f):
     return f.rsplit('.', 1)
 
-def pillow_to_bytes(pillow_image):
+def pillow_to_bytes(pillow_img):
     in_mem_file = io.BytesIO()
     pillow_img.save(in_mem_file, format=pillow_img.format)
     in_mem_file.seek(0)
