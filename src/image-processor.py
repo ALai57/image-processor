@@ -17,7 +17,7 @@ s3 = boto3.client('s3')
 MAX_SIZE       = (500,500)
 QUEUE_FOLDER   = 'queued'
 NEW_FOLDER     = 'processed'
-ARCHIVE_FOLDER = 'archive'
+ARCHIVE_FOLDER = 'raw'
 
 #############################
 # Helpers
@@ -44,7 +44,9 @@ def thumbnail_name(key):
     return new_key.replace(QUEUE_FOLDER, NEW_FOLDER)
 
 def archive_name(key):
-    return key.replace(QUEUE_FOLDER, ARCHIVE_FOLDER)
+    fname, ext = file_parts(key)
+    new_key    = fname + '-raw.' + ext
+    return new_key.replace(QUEUE_FOLDER, ARCHIVE_FOLDER)
 
 #############################
 # Main
