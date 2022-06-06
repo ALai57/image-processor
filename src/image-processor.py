@@ -54,7 +54,7 @@ def main(event, context):
         fname, ext = file_parts(key)
         new_key    = fname + '500.' + ext
         logger.info(f"Uploading to s3://{bucket}/{new_key}")
-        s3.upload_fileobj(pillow_to_bytes(img), bucket, new_key)
+        ##s3.upload_fileobj(pillow_to_bytes(img), bucket, new_key)
         logger.info(f"Successful upload to s3://{bucket}/{new_key}")
 
         return response['ContentType']
